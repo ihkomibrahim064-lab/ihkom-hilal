@@ -261,7 +261,7 @@ export default function BankSoal() {
                 </div>
               )}
               
-              <form id="createQuestionForm" onSubmit={handleCreateQuestion} className="space-y-6">
+              <form id="createQuestionForm" onSubmit={handleCreateOrUpdateQuestion} className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">Pertanyaan</label>
                   <textarea 
