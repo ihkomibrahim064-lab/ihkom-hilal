@@ -10,7 +10,7 @@ import ManageUsers from './pages/admin/ManageUsers';
 import ManageExamsAdmin from './pages/admin/ManageExams';
 
 import GuruDashboard from './pages/guru/Dashboard';
-import BankSoal from './pages/guru/BankSoal';
+import BankSoal from './pages/BankSoal';
 import GuruExams from './pages/guru/Exams';
 
 import SiswaDashboard from './pages/siswa/Dashboard';
@@ -59,12 +59,14 @@ export default function App() {
           }>
             <Route index element={<DashboardDecider />} />
             
+            {/* Shared Admin & Guru Routes */}
+            <Route path="questions" element={<ProtectedRoute allowedRoles={['admin', 'guru']}><BankSoal /></ProtectedRoute>} />
+            
             {/* Admin Routes */}
             <Route path="admin/users" element={<ProtectedRoute allowedRoles={['admin']}><ManageUsers /></ProtectedRoute>} />
             <Route path="admin/exams" element={<ProtectedRoute allowedRoles={['admin']}><ManageExamsAdmin /></ProtectedRoute>} />
             
             {/* Guru Routes */}
-            <Route path="guru/bank-soal" element={<ProtectedRoute allowedRoles={['guru']}><BankSoal /></ProtectedRoute>} />
             <Route path="guru/exams" element={<ProtectedRoute allowedRoles={['guru']}><GuruExams /></ProtectedRoute>} />
 
             {/* Siswa Routes */}

@@ -27,21 +27,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+    let timeoutId = setTimeout(() => {
+      if (isMounted) {
+        setLoading(false);
+        console.warn("Auth loading timeout reached.");
+      }
+    }, 3000);
+
     // 1. Get initial session
     const getInitialSession = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        setSession(session);
-        setUser(session?.user ?? null);
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error) console.error("Initial session error:", error);
         
-        if (session?.user) {
-          await fetchUserRole(session.user.id);
-        } else {
-          setLoading(false);
+        if (isMounted) {
+          setSession(session);
+          setUser(session?.user ?? null);
+          
+          if (session?.user) {
+            await fetchUserRole(session.user.id);
+          } else {
+            setLoading(false);
+          }
         }
       } catch (error) {
         console.error("Error fetching session:", error);
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
@@ -49,6 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // 2. Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (!isMounted) return;
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
@@ -60,6 +73,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
       subscription.unsubscribe();
     };
   }, []);

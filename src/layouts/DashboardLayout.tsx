@@ -28,11 +28,12 @@ export default function DashboardLayout() {
     admin: [
       { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
       { name: 'Manajemen User', href: '/app/admin/users', icon: Users },
+      { name: 'Bank Soal', href: '/app/questions', icon: BookOpen },
       { name: 'Manajemen Ujian', href: '/app/admin/exams', icon: FileText },
     ],
     guru: [
       { name: 'Dashboard', href: '/app', icon: LayoutDashboard },
-      { name: 'Bank Soal', href: '/app/guru/bank-soal', icon: BookOpen },
+      { name: 'Bank Soal', href: '/app/questions', icon: BookOpen },
       { name: 'Kelola Ujian', href: '/app/guru/exams', icon: FileText },
     ],
     siswa: [
